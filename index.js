@@ -19,6 +19,7 @@ app.use("/familyData", require("./routes/familyData"));
 app.use("/actions", require("./routes/actions"));
 app.use("/status", require("./routes/status"));
 app.use("/qualifications", require("./routes/qualifications"));
+app.use("/followupactions", require("./routes/followupactions"));
 
 
 app.use(typeError);

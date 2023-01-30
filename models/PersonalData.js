@@ -10,6 +10,10 @@ const personalDataSchema = new mongoose.Schema({
     sport: String,
     sex: String,
     religion: String,
+    profession: {
+        title: String,
+        celebrationDay: { type: Date },
+    },
     }, { timestamps: true });
 
 

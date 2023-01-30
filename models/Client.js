@@ -9,11 +9,12 @@ phonenumber: Number,
 address: String,
 age: Number,
 birthday: Date,
-personalData: [{ type: ObjectId, ref: "PersonalData"}],
-familyData: [{ type: ObjectId, ref: "FamilyData"}],
-actions: [{ type: ObjectId, ref: "Actions"}],
-status: [{ type: ObjectId, ref: "Status"}],
+personalData: { type: ObjectId, ref: "PersonalData"},
+familyData: { type: ObjectId, ref: "FamilyData"},
+actions:{ type: ObjectId, ref: "Actions"},
+status: { type: ObjectId, ref: "Status"},
 qualification: [{ type: ObjectId, ref: "Qualification"}],
+followUpActions: [{ type: ObjectId, ref: "FollowUpActions"}],
 
 
 }, { timestamps: true });

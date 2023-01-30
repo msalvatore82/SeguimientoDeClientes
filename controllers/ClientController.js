@@ -40,7 +40,8 @@ const ClientController = {
         .populate("familyData")
         .populate("actions")
         .populate("status")
-        .populate("qualification");
+        .populate("qualification")
+        .populate("followUpActions")
       res.send({ msg: "Su cliente", client });
     } catch (error) {
       console.error(error);
@@ -61,5 +62,6 @@ const ClientController = {
       console.error(error);
     }
   },
+  
 };
 module.exports = ClientController;
