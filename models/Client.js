@@ -1,32 +1,30 @@
 const mongoose = require("mongoose");
-const moment = require("moment");
-const PersonalData = require('./PersonalData');
+const ObjectId = mongoose.Schema.Types.ObjectId;
+
+const clientSchema = new mongoose.Schema({
+name: String,
+lastname: String,
+email: String,
+phonenumber: Number,
+address: String,
+age: Number,
+birthday: Date,
+personalData: [{ type: ObjectId, ref: "PersonalData"}],
+familyData: [{ type: ObjectId, ref: "FamilyData"}],
+actions: [{ type: ObjectId, ref: "Actions"}],
+status: [{ type: ObjectId, ref: "Status"}],
+qualification: [{ type: ObjectId, ref: "Qualification"}],
 
 
-const clientSchema = new mongoose.Schema(
-  {
-    name: String,
-    lastname: String,
-    email: String,
-    phonenumber: Number,
-    address: String,
-    age: Number,
-    personalData: { type: mongoose.Schema.Types.ObjectId, ref: "PersonalData" },
-    familyData: { type: mongoose.Schema.Types.ObjectId, ref: "FamilyData" },
-    actions: { type: mongoose.Schema.Types.ObjectId, ref: "Actions" },
-  },
-  { timestamps: true }
-);
+}, { timestamps: true });
 
-clientSchema.pre("save", async function (next) {
-    const personalData = await PersonalData.findOne({ _id: this.personalData });
-    if (personalData) {
-        this.age = moment().diff(personalData.birthday, "years");
-    } else {
-        this.age = null;
-    }
-    next();
-});
+clientSchema.methods.toJSON = function () {
+    const client = this._doc;
+    delete client.createdAt;
+    delete client.updatedAt;
+    delete client.__v;
+    return client;
+  };
 
 const Client = mongoose.model("Client", clientSchema);
 

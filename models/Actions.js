@@ -7,13 +7,28 @@ const ObjectId = mongoose.SchemaTypes.ObjectId;
 const actionsSchema = new mongoose.Schema({
     clientId: {
         type: ObjectId,
-        ref: "User",
+        ref: "Client",
       },
-    need: { type: mongoose.Schema.Types.ObjectId, ref: 'Need' },
-    presentation: { type: mongoose.Schema.Types.ObjectId, ref: 'Presentation' },
-    contact: { type: mongoose.Schema.Types.ObjectId, ref: 'Contact' },
+    need: String,
+    presentation: String,
+    contact: String,
   } , { timestamps: true });
+
+  actionsSchema.methods.toJSON = function () {
+    const actions = this._doc;
+    delete actions.createdAt;
+    delete actions.updatedAt;
+    delete actions.__v;
+    delete actions._id;
+    delete actions.clientId;
+    return actions;
+  };
 
   const Actions = mongoose.model('Actions', actionsSchema);
 
   module.exports = Actions;
+
+
+//   needs: { type: String, enum: ['Buy', 'Sell', 'Rent', 'Rent as tenant'] },
+// presentation: { type: String, enum: ['Yes', 'No'] },
+

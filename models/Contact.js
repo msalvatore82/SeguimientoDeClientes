@@ -1,18 +1,27 @@
 const mongoose = require("mongoose");
 const ObjectId = mongoose.SchemaTypes.ObjectId;
 
-const contactSchema = new mongoose.Schema({
+const contactSchema = new mongoose.Schema(
+  {
     clientId: {
-        type: ObjectId,
-        ref: "User",
-      },
-    contact: { type: String, enum: ['Yes', 'No'] },
-  }, { timestamps: true });
+      type: ObjectId,
+      ref: "Client",
+    },
+    contact: String,
+  },
+  { timestamps: true }
+);
 
-    
-  const Contact = mongoose.model('Contact', contactSchema);
+contactSchema.methods.toJSON = function () {
+  const contact = this._doc;
+  delete contact.createdAt;
+  delete contact.updatedAt;
+  delete contact.__v;
+  delete contact._id;
+  delete contact.clientId;
+  return contact;
+};
 
+const Contact = mongoose.model("Contact", contactSchema);
 
-  module.exports = Contact
-  
-  
+module.exports = Contact;

@@ -14,8 +14,11 @@ dbConnection();
 
 app.use("/admin", require("./routes/admin"));
 app.use("/clients", require("./routes/clients"));
-app.use("/contact", require("./routes/contact"));
-
+app.use("/data", require("./routes/data"));
+app.use("/familyData", require("./routes/familyData"));
+app.use("/actions", require("./routes/actions"));
+app.use("/status", require("./routes/status"));
+app.use("/qualifications", require("./routes/qualifications"));
 
 
 app.use(typeError);
