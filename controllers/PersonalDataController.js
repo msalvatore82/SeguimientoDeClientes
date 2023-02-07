@@ -7,9 +7,10 @@ const PersonalDataController = {
       const personalData = await PersonalData.create({
         ...req.body,
       });
-      const client = await Client.findById(req.body.clientId);
-      client.personalData.push(personalData._id);
-      await client.save();
+      await Client.updateOne(
+        { _id: req.body.clientId },
+        { $push: { personalData: personalData._id } }
+      );
       res.send({ msg: "Informacion personal del cliente", personalData });
     } catch (error) {
       console.error(error);

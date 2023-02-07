@@ -8,6 +8,9 @@ const contactSchema = new mongoose.Schema(
       ref: "Client",
     },
     contact: String,
+    lastContactDate: Date,
+    nextContactDate: Date,
+    observations: String
   },
   { timestamps: true }
 );

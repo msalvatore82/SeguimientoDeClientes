@@ -7,9 +7,10 @@ const FamilyDataController = {
       const familyData = await FamilyData.create({
         ...req.body
       });
-      const client = await Client.findById(req.body.clientId);
-      client.familyData.push(familyData._id);
-      await client.save();
+      await Client.updateOne(
+        { _id: req.body.clientId },
+        { $push: { familyData: familyData._id } }
+      );
       res.status(200).send({ msg: "Informacion personal del cliente", familyData});
     } catch (error) {
       res.status(500).send(error);

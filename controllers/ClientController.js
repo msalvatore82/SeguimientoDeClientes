@@ -33,7 +33,19 @@ const ClientController = {
       res.status(500).send({ msg: "Error al crear el cliente", error });
     }
   },
-  async getClientbyId(req, res) {
+  async getAllClients(req, res) {
+    try {
+      const clients = await Client.find()
+      res.send({msg: "Estos son sus clinetes:", clients});
+    } catch (error) {
+      console.error(error);
+      res
+        .status(500)
+        .send({ msg: "Ha habido un problema al traer las incidencias", error });
+    }
+  },
+
+  async getClientById(req, res) {
     try {
       const client = await Client.findById(req.params._id)
         .populate("personalData")

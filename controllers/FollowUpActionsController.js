@@ -8,26 +8,61 @@ const FollowUpActionsController = {
         clientId: req.body.clientId,
       });
       if (followUpActions) {
+        let dataExists = false;
         if (req.body.call) {
-          followUpActions.call.push({
-            observations: req.body.call[0].observations,
-            contactDate: req.body.call[0].contactDate,
+            
+          followUpActions.call.forEach((call) => {
+            if (
+              call.observations === req.body.call[0].observations &&
+              call.contactDate === req.body.call[0].contactDate
+            ) {
+              dataExists = true;
+            }
           });
+          if (!dataExists) {
+            followUpActions.call.push({
+              observations: req.body.call[0].observations,
+              contactDate: req.body.call[0].contactDate,
+            });
+          }
         }
         if (req.body.regards) {
-          followUpActions.regards.push({
-            greetingsType: req.body.regards[0].greetingsType,
-            dateOfGreetings: req.body.regards[0].dateOfGreetings,
+          followUpActions.regards.forEach((regard) => {
+            if (
+              regard.greetingsType === req.body.regards[0].greetingsType &&
+              regard.dateOfGreetings === req.body.regards[0].dateOfGreetings
+            ) {
+              dataExists = true;
+            }
           });
+          if (!dataExists) {
+            followUpActions.regards.push({
+              greetingsType: req.body.regards[0].greetingsType,
+              dateOfGreetings: req.body.regards[0].dateOfGreetings,
+            });
+          }
         }
         if (req.body.popBy) {
-          followUpActions.popBy.push({
-            string: req.body.popBy[0].string,
-            date: req.body.popBy[0].date,
-            value: req.body.popBy[0].value,
+          followUpActions.popBy.forEach((pop) => {
+            if (
+              pop.string === req.body.popBy[0].string &&
+              pop.date === req.body.popBy[0].date &&
+              pop.value === req.body.popBy[0].value
+            ) {
+              dataExists = true;
+            }
           });
+          if (!dataExists) {
+            followUpActions.popBy.push({
+              string: req.body.popBy[0].string,
+              date: req.body.popBy[0].date,
+              value: req.body.popBy[0].value,
+            });
+          }
         }
-        followUpActions = await followUpActions.save();
+        if (!dataExists) {
+          followUpActions = await followUpActions.save();
+        }
       } else {
         followUpActions = await FollowUpActions.create({
           ...req.body,
@@ -36,17 +71,14 @@ const FollowUpActionsController = {
         client.followUpActions.push(followUpActions._id);
         await client.save();
       }
-      res
-        .status(200)
-        .send({
-          msg: "Informacion de seguimiento de acciones del cliente",
-          followUpActions,
-        });
+      res.status(200).send({
+        msg: "Informacion de seguimiento de acciones del cliente",
+        followUpActions,
+      });
     } catch (error) {
       res.status(500).send(error);
     }
   },
-
   async updateFollowUpActions(req, res) {
     try {
       const followUpActions = await FollowUpActions.findByIdAndUpdate(

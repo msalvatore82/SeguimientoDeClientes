@@ -1,10 +1,10 @@
 const Client = require("../models/Client");
-const QualificationSchema = require("../models/Qualification");
+const Qualification = require("../models/Qualification");
 
 const QualificationController = {
   async createQualification(req, res) {
     try {
-      const qualification = await QualificationSchema.create({
+      const qualification = await Qualification.create({
         ...req.body
       });
       const client = await Client.findById(req.body.clientId);

@@ -7,12 +7,12 @@ const StatusController = {
       const status = await Status.create({
         ...req.body
       });
-      const client = await Client.findById(req.body.clientId);
-      client.status.push(status._id);
-      await client.save();
+      await Client.findByIdAndUpdate(req.client._id, {
+        $push: { status: status._id },
+      });
       res.status(200).send({ msg: "El cliente esta", status });
     } catch (error) {
-      res.status(500).send(error);
+      res.status(500).send({ msg: "Hay un problema", error });
     }
   }
 };

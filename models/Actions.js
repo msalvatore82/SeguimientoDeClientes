@@ -10,6 +10,10 @@ const actionsSchema = new mongoose.Schema({
     need: String,
     presentation: String,
     contact: String,
+    tracing: String,
+    lastContactDate: Date,
+    nextContactDate: Date,
+    observations: String
   } , { timestamps: true });
 
   actionsSchema.methods.toJSON = function () {

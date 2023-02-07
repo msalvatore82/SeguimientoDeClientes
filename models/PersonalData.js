@@ -1,36 +1,34 @@
 const mongoose = require("mongoose");
 const ObjectId = mongoose.SchemaTypes.ObjectId;
 
-const personalDataSchema = new mongoose.Schema({
+const personalDataSchema = new mongoose.Schema(
+  {
     clientId: {
-    type: ObjectId,
-    ref: "Client",
+      type: ObjectId,
+      ref: "Client",
     },
     fansteam: String,
     sport: String,
     sex: String,
     religion: String,
-    profession: {
-        title: String,
-        celebrationDay: { type: Date },
-    },
-    }, { timestamps: true });
+    titleprofession: String,
+    celebrationDay: String,
+  },
+  { timestamps: true }
+);
 
+personalDataSchema.methods.toJSON = function () {
+  const personalData = this._doc;
+  delete personalData.createdAt;
+  delete personalData.updatedAt;
+  delete personalData.__v;
+  delete personalData._id;
+  delete personalData.clientId;
+  return personalData;
+};
 
-    personalDataSchema.methods.toJSON = function () {
-        const personal = this._doc;
-        delete personal.createdAt;
-        delete personal.updatedAt;
-        delete personal.__v;
-        delete personal._id;
-        delete personal.clientId;
-        return personal;
-      };
+const PersonalData = mongoose.model("PersonalData", personalDataSchema);
 
-const PersonalData = mongoose.model('PersonalData', personalDataSchema);
+module.exports = PersonalData;
 
-  
-module.exports = PersonalData
-
-
-  // { type: String, enum: ['Man', 'Woman', 'Non-binary'] },
+// { type: String, enum: ['Man', 'Woman', 'Non-binary'] },

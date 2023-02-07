@@ -75,7 +75,7 @@ const AdminController = {
           if (admin.tokens.length > 4) tokenShift();
           admin.tokens.push(token);
           await admin.save();
-          res.send({ msg: "Bienvenid@ " + admin.name, token });
+          res.send({ msg: "Bienvenid@ " + admin.name, token, admin });
         } catch (error) {
           console.error(error);
           res.status(500).send({ msg: "Ha habido un error al logearte", error });

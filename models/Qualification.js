@@ -22,13 +22,13 @@ qualificationSchema.methods.toJSON = function () {
     return qualification;
   };
 
-const QualificationSchema = mongoose.model(
+const Qualification = mongoose.model(
   "Qualification",
   qualificationSchema
 );
 
 
 
-module.exports = QualificationSchema;
+module.exports = Qualification;
 
 // { type: String, enum: ["A+", "A", "B", "C"] },
