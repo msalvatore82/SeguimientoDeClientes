@@ -19,16 +19,16 @@ const followUpActionsSchema = new mongoose.Schema(
         dateOfGreetings: { type: Date },
       },
     ],
-    dateToRemember: [
+    rememberDate: [
       {
         remember: String,
-        date: { type: Date },
+        dateToRemember: { type: Date },
       },
     ],
     popBy: [
       {
-        string: { type: String },
-        date: { type: Date },
+        descripcion: { type: String },
+        datepopBy: { type: Date },
         value: { type: Number },
       },
     ],
