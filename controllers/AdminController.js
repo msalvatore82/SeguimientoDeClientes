@@ -75,11 +75,12 @@ const AdminController = {
           if (admin.tokens.length > 4) tokenShift();
           admin.tokens.push(token);
           await admin.save();
-          res.send({ msg: "Bienvenid@ " + admin.name, token, admin });
+          res.send({ msg: "Bienvenid@ " + admin.username, token, admin });
         } catch (error) {
           console.error(error);
           res.status(500).send({ msg: "Ha habido un error al logearte", error });
         }
+      
       },
     
       async logout(req, res) {
@@ -93,6 +94,14 @@ const AdminController = {
           res
             .status(500)
             .send({ msg: "Hubo un problema al intentar desconectar el usuario" });
+        }
+      },
+      async getInfo(req, res) {
+        try {
+          const admin = await Admin.findById(req.admin._id).populate("clients");
+          res.send({ msg: "su Admin", admin });
+        } catch (error) {
+          console.error(error);
         }
       },
 

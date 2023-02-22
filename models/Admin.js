@@ -8,6 +8,8 @@ const adminSchema = new mongoose.Schema({
   password: { type: String, required: true },
   confirmed: Boolean,
   tokens: [],
+  clients: [{ type: ObjectId, ref: "Client" }],
+
 }, { timestamps: true });
 
 const Admin = mongoose.model('Admin', adminSchema);

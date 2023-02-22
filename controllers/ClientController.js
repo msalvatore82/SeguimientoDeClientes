@@ -1,3 +1,4 @@
+const Admin = require("../models/Admin");
 const Client = require("../models/Client");
 
 function calculateAge(birthday) {
@@ -12,7 +13,7 @@ function calculateAge(birthday) {
 }
 
 const ClientController = {
-  async createClient(req, res) {
+  async createClientByAdmin(req, res) {
     try {
       let age;
       let birthdate;
@@ -24,9 +25,11 @@ const ClientController = {
       }
       const client = await Client.create({
         ...req.body,
+        adminId: req.admin._id,
         birthday: birthdate,
         age: age,
       });
+      await Admin.updateOne({ _id: req.admin._id }, { $push: { clients: client._id } });
       res.send({ msg: "Cliente creado con éxito", client });
     } catch (error) {
       console.error(error);
@@ -42,6 +45,15 @@ const ClientController = {
       res
         .status(500)
         .send({ msg: "Ha habido un problema al traer las incidencias", error });
+    }
+  },
+  async getAllClientsByAdmin(req, res) {
+    try {
+      const clients = await Client.find({ adminId: req.admin._id }).populate('personalData').populate('familyData').populate('actions').populate('status').populate('qualification').populate('followUpActions');
+      res.send({ clients });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ msg: "Error al obtener los clientes", error });
     }
   },
 
