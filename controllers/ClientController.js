@@ -1,7 +1,5 @@
 const Admin = require("../models/Admin");
 const Client = require("../models/Client");
-const Status = require("../models/Status");
-
 
 function calculateAge(birthday) {
   const today = new Date();
@@ -15,37 +13,29 @@ function calculateAge(birthday) {
 }
 
 const ClientController = {
-    async createClientByAdmin(req, res) {
-      try {
-        let age;
-        let birthdate;
-        if (req.body.birthday) {
-          birthdate = new Date(req.body.birthday.replace(/\//g, "-"));
-          age = calculateAge(birthdate);
-        } else if (req.body.age) {
-          age = req.body.age;
-        }
-        const client = await Client.create({
-          ...req.body,
-          adminId: req.admin._id,
-          birthday: birthdate,
-          age: age,
-        });
-  
-        // Create the "Active" status
-        const status = await Status.create({
-          clientId: client._id,
-          status: "Active",
-        });
-  
-        await Admin.updateOne({ _id: req.admin._id }, { $push: { clients: client._id } });
-        res.send({ msg: "Cliente creado con éxito", client, status });
-      } catch (error) {
-        console.error(error);
-        res.status(500).send({ msg: "Error al crear el cliente", error });
+  async createClientByAdmin(req, res) {
+    try {
+      let age;
+      let birthdate;
+      if (req.body.birthday) {
+        birthdate = new Date(req.body.birthday.replace(/\//g, "-"));
+        age = calculateAge(birthdate);
+      } else if (req.body.age) {
+        age = req.body.age;
       }
-    },
-  
+      const client = await Client.create({
+        ...req.body,
+        adminId: req.admin._id,
+        birthday: birthdate,
+        age: age,
+      });
+      await Admin.updateOne({ _id: req.admin._id }, { $push: { clients: client._id } });
+      res.send({ msg: "Cliente creado con éxito", client });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send({ msg: "Error al crear el cliente", error });
+    }
+  },
   async getAllClients(req, res) {
     try {
       const clients = await Client.find()

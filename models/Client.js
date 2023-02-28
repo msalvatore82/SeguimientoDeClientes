@@ -13,8 +13,10 @@ source: String,
 personalData: { type: ObjectId, ref: "PersonalData"},
 familyData: { type: ObjectId, ref: "FamilyData"},
 actions:{ type: ObjectId, ref: "Actions"},
-status: { type: ObjectId, ref: "Status"},
-qualification: [{ type: ObjectId, ref: "Qualification"}],
+status: {
+  type: String, 
+  default: "Active",
+},qualification: [{ type: ObjectId, ref: "Qualification"}],
 followUpActions: [{ type: ObjectId, ref: "FollowUpActions"}],
 adminId: { type: ObjectId, ref: "Admin" },
 
